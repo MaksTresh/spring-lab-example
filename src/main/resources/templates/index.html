@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+
+    <meta charset="utf-8"></meta>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+
+    <title>Transport Timetable</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet"></link>
+
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/angular-1.7.5.min.js"></script>
+    <script src="js/transport.js"></script>
+
+</head>
+<body ng-app="transports" ng-controller="TransportsController">
+
+<div class="container">
+    <div class="row">
+        <h1>Transport Timetable</h1>
+
+        <div ng-controller="getTransports" ng-show="transportsList.length > 0">
+            <table id="transportsTable" class="table table-hover">
+                <thead>
+                <tr>
+                    <th><h2>Название рейса</h2></th>
+                    <th><h2>Дата</h2></th>
+                    <th><h2>Тип транспорта</h2></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="transportEl in transportsList" id="{{transportEl.id}}">
+                    <td>{{transportEl.raceName}}</td>
+                    <td>{{transportEl.date}}</td>
+                    <td>{{transportEl.transportType}}</td>
+                    <td><input type="button" value="Удалить" ng-click="deleteTransport(transportEl._links.self.href)"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-danger" role="alert" ng-show="errormessage">{{errormessage}}</div>
+
+        <div>
+            <form role="form" ng-submit="addTransport()">
+                <div class="form-group">
+                    <label for="inputname">Название рейса</label>
+                    <input type="text" class="form-control" id="inputname" name="inputname" placeholder="Название рейса"
+                           ng-model="inputname" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputdate">Дата</label>
+                    <input type="text" class="form-control" id="inputdate" name="inputdate" ng-model="inputdate"
+                           placeholder="yyyy-mm-dd" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputtime">Время</label>
+                    <input type="text" class="form-control" id="inputtime" name="inputtime" ng-model="inputtime"
+                           placeholder="hh:mm" required>
+                </div>
+                <div class="form-group">
+                <select class="form-select" aria-label="Default select example" id="inputtype" name="inputtype"
+                        ng-model="inputtype" style="width: 100%; padding: 10px">
+                    <option value="TRAIN">Поезд</option>
+                    <option value="AIRPLANE">Самолет</option>
+                    <option value="SHIP">Корабль</option>
+                </select>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 10px">Добавить</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
