@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
 
     <meta charset="utf-8"></meta>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
     <meta name="viewport" content="width=device-width, initial-scale=1"></meta>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
+
+    <meta name="_csrf" content="${_csrf.token}" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="${_csrf.parameterName}" th:content="${_csrf.parameterName}"/>
 
     <title>Transport Timetable</title>
 
@@ -41,14 +44,14 @@
                     <td>{{transportEl.raceName}}</td>
                     <td>{{transportEl.date}}</td>
                     <td>{{transportEl.transportType}}</td>
-                    <td><input type="button" value="Удалить" ng-click="deleteTransport(transportEl._links.self.href)"/>
+                    <td><input type="button" value="Удалить" ng-click="deleteTransport(transportEl.id)"/>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
 
-        <div class="alert alert-danger" role="alert" ng-show="errormessage">{{errormessage}}</div>
+        <div class="alert alert-danger" role="alert" ng-show="errormessage">{{errormessage}}. Please <a href='/login'>login</a></div>
 
         <div>
             <form role="form" ng-submit="addTransport()">

@@ -1,0 +1,2 @@
+insert into "user"("login", "pass_hash") values ('admin','$2a$10$r4h6L6/hIsjT3Vx0D5w6ful.k8FTwnbRVrnmHmg4u8YZl7aI0NnVu');
+insert into "transport"("date", "race_name", "transport_type") values ('1962-09-23 03:23:34.234', 'qwe', 1);

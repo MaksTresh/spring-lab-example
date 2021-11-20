@@ -1,9 +1,13 @@
-var app = angular.module('transports', []);
+var app = angular.module('transports', []).config(function ($httpProvider) {
+    csrftoken = $("meta[name='_csrf']").attr("content");
+    csrfheader = $("meta[name='_csrf_header']").attr("content");
+    $httpProvider.defaults.headers.common["X-CSRF-TOKEN"] = csrftoken;
+});
 
 app.controller("TransportsController", function ($scope, $http) {
 
     $scope.successGetTransportsCallback = function (response) {
-        $scope.transportsList = response.data._embedded.transports;
+        $scope.transportsList = response.data;
         console.log(response.data);
         $scope.errormessage = "";
     };
@@ -20,7 +24,7 @@ app.controller("TransportsController", function ($scope, $http) {
     $scope.successDeleteTransportCallback = function (response) {
         for (var i = 0; i < $scope.transportsList.length; i++) {
             var j = $scope.transportsList[i];
-            if (j._links.self.href === $scope.deletedHref) {
+            if (j.id === $scope.deletedId) {
                 $scope.transportsList.splice(i, 1);
                 break;
             }
@@ -33,14 +37,14 @@ app.controller("TransportsController", function ($scope, $http) {
         $scope.errormessage = "Unable to delete transport";
     };
 
-    $scope.deleteTransport = function (href) {
-        $scope.deletedHref = href;
-        $http.delete(href).then($scope.successDeleteTransportCallback, $scope.errorDeleteTransportCallback);
+    $scope.deleteTransport = function (id) {
+        $scope.deletedId = id;
+        $http.delete('transports/' + id).then($scope.successDeleteTransportCallback, $scope.errorDeleteTransportCallback);
     };
 
 
     $scope.successGetTransportCallback = function (response) {
-        $scope.transportsList.splice(0, 0, response.data);
+        $scope.transportsList = response.data;
         $scope.errormessage = "";
     };
 
@@ -50,7 +54,7 @@ app.controller("TransportsController", function ($scope, $http) {
     };
 
     $scope.successAddTransportCallback = function (response) {
-        $http.get(response.data._links.self.href).then($scope.successGetTransportCallback, $scope.errorGetTransportCallback);
+        $http.get('/transports').then($scope.successGetTransportCallback, $scope.errorGetTransportCallback);
         $scope.errormessage = "";
     };
 

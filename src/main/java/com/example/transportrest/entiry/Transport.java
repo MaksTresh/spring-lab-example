@@ -16,7 +16,12 @@ public class Transport {
     private TransportType transportType;
 
     public Transport() {
+    }
 
+    public Transport(String raceName, Timestamp date, TransportType transportType) {
+        this.raceName = raceName;
+        this.date = date;
+        this.transportType = transportType;
     }
 
     public Timestamp getDate() {
